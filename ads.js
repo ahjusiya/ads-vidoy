@@ -1,1 +1,2 @@
-console.log("ads.js aktif dari GitHub Pages!");
+// ads.js (function(){ var head = document.getElementsByTagName('head')[0]; var scripts = [ "https://ahjusiya.github.io/ads-vidoy/ads-pop.js", "https://ahjusiya.github.io/ads-vidoy/ads-sos.js", "https://ahjusiya.github.io/ads-vidoy/analytic.js", "https://ahjusiya.github.io/ads-vidoy/disable-costom-button-back.js" ]; scripts.forEach(function(src){ var s = document.createElement('script'); s.src = src; s.async = true; head.appendChild(s); }); })();
+
