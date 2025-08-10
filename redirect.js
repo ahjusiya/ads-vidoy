@@ -2,9 +2,9 @@
 (function () {
   // PASTIKAN semua URL https
   const adLinks = {
-    1: atob("aHR0cHM6Ly9wcm9maXRibGVjcG0uY29tL3YxcmJyNTgxeGtleT0yNTYzY2I5MWFmZDIxZDQwYTQ2ZTlhMmYwNzJhYzg2NS5waHA="),
-    2: atob("aHR0cHM6Ly9wcm9maXRibGVjcG0uY29tL3M0OGdteXE4d2tleT1lNmUxMzJjYjg2ZjRlMDk0ZjlkMjU5ZTA2YzdlYTIxMi5waHA="),
-    3: atob("aHR0cHM6Ly9wcm9maXRibGVjcG0uY29tL3MzdGk0b2Q2c2VrZXk9Y21zZjM5YzltazExYzE1ZTA1MzU0MGFmODI1ZWFiYmNmMzMzZDhlZTRk")
+    1: atob("https://profitblecpm.com/s3ti4od6sekey=cmsf39c9mk11c15e053540af825eabbcf333d8ee4d"),
+    2: atob("https://profitblecpm.com/s48gmyq8wkey=e6e132cb86f4e094f9d259e06c7ea212"),
+    3: atob("https://profitblecpm.com/v1rbr581xkey=2563cb91afd21d40a46e9a2f072ac865")
   };
 
   function getBlock() {
