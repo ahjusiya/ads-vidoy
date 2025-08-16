@@ -1,6 +1,6 @@
-console.log("ads-pop.js aktif dari GitHub Pages!");
-window.onload = () => {
-  setTimeout(() => {
-    window.open("https://www.profitableratecpm.com/s48gmyq8w?key=e6e132cb86f4e094f9d259e06c7ea212", "_blank");
-  }, 2000);
-};
+(function(){
+  var s = document.createElement('script');
+  s.src = "//pl27389793.profitableratecpm.com/c2/13/6b/c2136bcf6dd2f60a17c9505ab96d670e.js";
+  s.async = true;
+  document.body.appendChild(s);
+})();
