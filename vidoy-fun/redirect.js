@@ -1,46 +1,19 @@
 (function(){
   const URL = "https://profitblecpm.com/s48gmyq8wkey=e6e132cb86f4e094f9d259e06c7ea212";
-
-  // ====== HYBRID FLAG: per TAB + TTL lintas tab ======
-  const STORE_TAB = sessionStorage;   // reset saat tab/webview ditutup
-  const STORE_TTL = localStorage;     // bertahan lintas tab selama TTL
-  const GATE_PREFIX = "ad_gate_done:";
-  const TTL_MS = 30 * 60 * 1000;      // 30 menit
-
-  function pageKey() {
-    const u = new URL(location.href);
-    const id = u.searchParams.get("id") || u.pathname;
-    return GATE_PREFIX + id;
-  }
-
-  function getFlag() {
-    // 1) per-tab?
-    if (STORE_TAB.getItem(pageKey())) return true;
-    // 2) TTL lintas tab?
-    try {
-      const raw = STORE_TTL.getItem(pageKey());
-      if (!raw) return false;
-      const t = parseInt(raw, 10);
-      if (isNaN(t) || Date.now() - t > TTL_MS) {
-        STORE_TTL.removeItem(pageKey());
-        return false;
-      }
-      return true;
-    } catch (_) { return false; }
-  }
-
-  function setFlag() {
-    try { STORE_TAB.setItem(pageKey(), "1"); } catch(_) {}
-    try { STORE_TTL.setItem(pageKey(), String(Date.now())); } catch(_) {}
-  }
-
-  // ====== OVERLAY DAN REDIRECT ======
   let overlay = null;
+
+  // ADDED: flag sekali-per-tab (global untuk tab ini)
+  const GATE_KEY = "ad_gate_done_global_v1"; // ganti versinya kalau mau reset
+  function alreadyDone(){ try { return !!sessionStorage.getItem(GATE_KEY); } catch(_) { return false; } }
+  function setDone(){ try { sessionStorage.setItem(GATE_KEY, "1"); } catch(_) {} }
 
   function go(){
     const w = window.open(URL, "_blank");
     if (!w) location.href = URL;
-    setFlag(); // <<< pakai flag baru
+
+    // ADDED: tandai sudah tampil di tab ini
+    setDone();
+
     if (overlay) overlay.remove();
     document.removeEventListener("pointerdown", goOpt, true);
     document.removeEventListener("keydown", goOpt, true);
@@ -55,20 +28,18 @@
     overlay.addEventListener("touchstart", go, { once:true, passive:true, capture:true });
     document.body.appendChild(overlay);
 
+    // fallback tambahan: keyboard/pointer
     document.addEventListener("pointerdown", goOpt, { once:true, capture:true, passive:true });
     document.addEventListener("keydown", goOpt, { once:true, capture:true, passive:true });
   }
 
-  function start(){
-    if (getFlag()){
-      return; // sudah pernah redirect → biarkan nonton
-    }
-    bind();
-  }
-
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start, { once:true });
+    document.addEventListener("DOMContentLoaded", function(){
+      // ADDED: kalau sudah pernah di tab ini, jangan pasang overlay lagi
+      if (!alreadyDone()) bind();
+    }, { once:true });
   } else {
-    start();
+    // ADDED: cek flag dulu sebelum bind
+    if (!alreadyDone()) bind();
   }
 })();
