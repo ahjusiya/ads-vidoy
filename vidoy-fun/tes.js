@@ -1,7 +1,7 @@
 (function () {
   try {
     // === KONFIGURASI (GANTI BAGIAN INI SAJA) ===
-    var fallbackUrl = "https://shinigami.bio";        // fallback web (harus HTTPS)
+    var fallbackUrl = "https://vidoy.fun/tes";        // fallback web (harus HTTPS)
     var appScheme   = "myapp";                        // skema app, contoh: "myapp"
     var appPath     = "/open?ref=tw";                 // path/query di dalam app
     var androidPkg  = "com.example.myapp";            // package Android kamu
