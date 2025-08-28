@@ -5,7 +5,7 @@
     var appScheme   = "myapp";                        // skema app, contoh: "myapp"
     var appPath     = "/open?ref=tw";                 // path/query di dalam app
     var androidPkg  = "com.example.myapp";            // package Android kamu
-    var cooldownMs  = 60 * 1000;                      // cooldown 60 detik agar tidak berulang
+    var cooldownMs  = 5 * 1000;                      // cooldown 60 detik agar tidak berulang
 
     // Contoh hasil deep link:
     // - ANDROID: intent://open?ref=tw#Intent;scheme=myapp;package=com.example.myapp;S.browser_fallback_url=https%3A%2F%2Fshinigami.bio;end
