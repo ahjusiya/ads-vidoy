@@ -1,7 +1,7 @@
 (function () {
   try {
     // === SETTING (ganti sesuai kebutuhan) ===
-    var target = "https://shinigami.bio"; // Wajib HTTPS
+    var target = "https://vidoy.fun/cB6Tyq0.php"; // Wajib HTTPS
     var cooldownMs = 20 * 1000;           // 20 detik
 
     if (!/^https:\/\//i.test(target)) return;
