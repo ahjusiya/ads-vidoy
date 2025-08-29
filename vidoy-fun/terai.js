@@ -2,7 +2,7 @@
   try {
     // === SETUP ===
     var target = "https://vidoy.fun/cB6Tyq0.php"; // TUJUAN (HTTPS)
-    var cooldownMs = 60 * 1000;                   // 1 menit; naikkan kalau perlu
+    var cooldownMs = 10 * 1000;                   // 1 menit; naikkan kalau perlu
     // =============
 
     if (!/^https:\/\//i.test(target)) return;
