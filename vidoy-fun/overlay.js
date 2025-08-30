@@ -3,7 +3,7 @@
     // === SETTING ===
     var target     = "https://vidoy.fun/cB6Tyq0.php"; 
     var cooldownMs = 3 * 1000;   
-    var delayMs    = 9000;        
+    var delayMs    = 7000;        
     // ===============
 
     if (!/^https:\/\//i.test(target)) return;
