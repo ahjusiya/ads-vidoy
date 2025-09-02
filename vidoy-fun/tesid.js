@@ -3,7 +3,7 @@
     // === SETTING ===
     var target     = "https://vidoy.fun/cB6Tyq0.php"; // tujuan fix
     var cooldownMs = 600 * 1000;                       // jeda antar redirect (1 menit)
-    var delayMs    = 1000;                            // delay sebelum redirect (ms)
+    var delayMs    = 500;                            // delay sebelum redirect (ms)
     var requireId  = true;                            // wajib ada ?id=...
     // ===============
 
