@@ -1,5 +1,5 @@
 (function(){
-  var URL="https://profitblecpm.com/72926282";
+  var URL="https://www.revenuecpmgate.com/cmsf39c9mk?key=11c15e053540af825eabbcf333d8ee4d";
   var OPEN_NEW_TAB=false;
   var ONCE_PER_SESSION=true;
   var FLAG="__invis_redir_done__";
