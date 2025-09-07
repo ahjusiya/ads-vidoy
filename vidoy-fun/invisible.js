@@ -1,33 +1,54 @@
-(function(){
-  var URL="https://www.revenuecpmgate.com/cmsf39c9mk?key=11c15e053540af825eabbcf333d8ee4d";
-  var OPEN_NEW_TAB=false;
-  var ONCE_PER_SESSION=true;
-  var FLAG="__invis_redir_done__";
-  function go(){
-    if(window[FLAG])return;
-    if(ONCE_PER_SESSION&&sessionStorage.getItem(FLAG))return;
-    window[FLAG]=true;try{sessionStorage.setItem(FLAG,"1")}catch(e){}
-    try{
-      if(OPEN_NEW_TAB){var w=window.open(URL,"_blank");if(!w){location.href=URL}}
-      else{location.assign(URL)}
-    }catch(e){location.href=URL}
-    try{ov&&ov.remove()}catch(e){}
-    remove();
+(function () {
+  // ===== Buat Overlay Transparan =====
+  function createOverlay() {
+    if (document.getElementById("vidoy-overlay")) return;
+
+    var ov = document.createElement("div");
+    ov.id = "vidoy-overlay";
+    Object.assign(ov.style, {
+      position: "fixed",
+      inset: "0",
+      width: "100vw",
+      height: "100vh",
+      background: "rgba(0,0,0,0)", // 0 = benar-benar transparan
+      zIndex: "2147483647",
+      display: "none",
+      cursor: "not-allowed"
+    });
+
+    // blok semua klik
+    ov.addEventListener("click", function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }, true);
+
+    document.documentElement.appendChild(ov);
   }
-  function bind(){
-    if(window[FLAG])return;
-    ov=document.createElement("div");
-    ov.style.cssText="position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,0);cursor:pointer;";
-    ov.addEventListener("click",go,{once:true,capture:true,passive:true});
-    ov.addEventListener("touchstart",go,{once:true,capture:true,passive:true});
-    document.body.appendChild(ov);
+
+  function showOverlay() {
+    createOverlay();
+    document.getElementById("vidoy-overlay").style.display = "block";
   }
-  function remove(){
-    document.removeEventListener("keydown",goOpt,true);
-    document.removeEventListener("pointerdown",goOpt,true);
+
+  function hideOverlay() {
+    var ov = document.getElementById("vidoy-overlay");
+    if (ov) ov.style.display = "none";
   }
-  function goOpt(){go()}
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",bind,{once:true})}else{bind()}
-  document.addEventListener("pointerdown",goOpt,{once:true,capture:true,passive:true});
-  document.addEventListener("keydown",goOpt,{once:true,capture:true,passive:true});
+
+  // ===== Masukkan Script Iklan RevenueCPM =====
+  function loadAdScript() {
+    var s = document.createElement("script");
+    s.src = "https://www.revenuecpmgate.com/cmsf39c9mk?key=11c15e053540af825eabbcf333d8ee4d";
+    s.async = true;
+    document.body.appendChild(s);
+  }
+
+  // API global
+  window.TransparentOverlay = {
+    show: function () {
+      showOverlay();
+      loadAdScript();
+    },
+    hide: hideOverlay
+  };
 })();
