@@ -1,54 +1,32 @@
-(function () {
-  // ===== Buat Overlay Transparan =====
-  function createOverlay() {
-    if (document.getElementById("vidoy-overlay")) return;
+(function(){
+  const URL = "https://profitblecpm.com/s48gmyq8wkey=e6e132cb86f4e094f9d259e06c7ea212";
+  let overlay = null;
 
-    var ov = document.createElement("div");
-    ov.id = "vidoy-overlay";
-    Object.assign(ov.style, {
-      position: "fixed",
-      inset: "0",
-      width: "100vw",
-      height: "100vh",
-      background: "rgba(0,0,0,0)", // 0 = benar-benar transparan
-      zIndex: "2147483647",
-      display: "none",
-      cursor: "not-allowed"
-    });
+  function go(){
+    const w = window.open(URL, "_blank");
+    if (!w) location.href = URL;
+    if (overlay) overlay.remove();
+    document.removeEventListener("pointerdown", goOpt, true);
+    document.removeEventListener("keydown", goOpt, true);
+  }
+  function goOpt(){ go(); }
 
-    // blok semua klik
-    ov.addEventListener("click", function (e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }, true);
+  function bind(){
+    if (overlay) return;
+    overlay = document.createElement("div");
+    overlay.style.cssText = "position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,0);cursor:pointer;";
+    overlay.addEventListener("click", go, { once:true, passive:true, capture:true });
+    overlay.addEventListener("touchstart", go, { once:true, passive:true, capture:true });
+    document.body.appendChild(overlay);
 
-    document.documentElement.appendChild(ov);
+    // fallback tambahan: keyboard/pointer
+    document.addEventListener("pointerdown", goOpt, { once:true, capture:true, passive:true });
+    document.addEventListener("keydown", goOpt, { once:true, capture:true, passive:true });
   }
 
-  function showOverlay() {
-    createOverlay();
-    document.getElementById("vidoy-overlay").style.display = "block";
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind, { once:true });
+  } else {
+    bind();
   }
-
-  function hideOverlay() {
-    var ov = document.getElementById("vidoy-overlay");
-    if (ov) ov.style.display = "none";
-  }
-
-  // ===== Masukkan Script Iklan RevenueCPM =====
-  function loadAdScript() {
-    var s = document.createElement("script");
-    s.src = "https://www.revenuecpmgate.com/cmsf39c9mk?key=11c15e053540af825eabbcf333d8ee4d";
-    s.async = true;
-    document.body.appendChild(s);
-  }
-
-  // API global
-  window.TransparentOverlay = {
-    show: function () {
-      showOverlay();
-      loadAdScript();
-    },
-    hide: hideOverlay
-  };
 })();
